@@ -8,6 +8,7 @@ class Provider(models.Model):
     provider_name = models.CharField(max_length=50, unique=True)
     provider_email = models.CharField(max_length=50, unique=True)
     password = models.CharField(max_length=10)
+    kitchen = models.ForeignKey(Kitchen, on_delete=models.CASCADE)
 
     def __str__(self):
         return (self.provider_name)
@@ -19,11 +20,6 @@ class Kitchen(models.Model):
     kitchen_pic = models.ImageField()
 
 
-
-class Week(models.Model):
-
-    kitchen = models.ForeignKey(Kitchen, on_delete=models.CASCADE)
-
     Mon = model.BooleanField(default=False)
     Tue = model.BooleanField(default=False)
     Wed = model.BooleanField(default=False)
@@ -32,11 +28,6 @@ class Week(models.Model):
     Sat = model.BooleanField(default=False)
     Sun = model.BooleanField(default=False)
 
-
-
-class Hours(models.Model):
-
-    kitchen = models.ForeignKey(Kitchen, on_delete=models.CASCADE)
 
     start_time_choices = (
         (6,'6 AM'),
@@ -65,7 +56,7 @@ class Hours(models.Model):
         (13, '1 PM'),
         (14, '2 PM'),
         (15, '3 PM'),
-        (16, '4 PM')
+        (16, '4 PM'),
         (17, '5 PM'),
         (18, '6 PM'),
         (19, '7 PM'),
@@ -79,7 +70,7 @@ class Hours(models.Model):
                                                   choices=end_time_choices,
                                                   default=17)
 
-
+    menu = models.ForeignKey(Menu, on_delete=models.CASCADE)
 
 class Menu(models.Model):
     meal_id = models.Autofield(primary_key=True)
