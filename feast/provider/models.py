@@ -7,7 +7,7 @@ class Provider(models.Model):
     provider_id = models.AutoField(primary_key=True)
     provider_name = models.CharField(max_length=50, unique=True)
     provider_email = models.CharField(max_length=50, unique=True)
-    password = models.CharField(max_length=10)
+    provider_password = models.CharField(max_length=10)
     kitchen = models.ForeignKey(Kitchen, on_delete=models.CASCADE)
 
     def __str__(self):
@@ -17,16 +17,17 @@ class Provider(models.Model):
 class Kitchen(models.Model):
 
     kitchen_id = models.Autofield(primary_key=True)
-    kitchen_pic = models.ImageField()
+    kitchen_pic = models.ImageField(upload_to='uploads/%Y/%m/%d/')
+    menu = models.ForeignKey(Menu, on_delete=models.CASCADE)
 
 
-    Mon = model.BooleanField(default=False)
-    Tue = model.BooleanField(default=False)
-    Wed = model.BooleanField(default=False)
-    Thur = model.BooleanField(default=False)
-    Fri = model.BooleanField(default=False)
-    Sat = model.BooleanField(default=False)
-    Sun = model.BooleanField(default=False)
+    Mon = models.BooleanField(default=False)
+    Tue = models.BooleanField(default=False)
+    Wed = models.BooleanField(default=False)
+    Thu = models.BooleanField(default=False)
+    Fri = models.BooleanField(default=False)
+    Sat = models.BooleanField(default=False)
+    Sun = models.BooleanField(default=False)
 
 
     start_time_choices = (
@@ -70,13 +71,30 @@ class Kitchen(models.Model):
                                                   choices=end_time_choices,
                                                   default=17)
 
-    menu = models.ForeignKey(Menu, on_delete=models.CASCADE)
 
 class Menu(models.Model):
     meal_id = models.Autofield(primary_key=True)
-    meal = model.CharField(max_length=50, unique=True)
-    vegetarian = model.BooleanField(default=False)
+    meal = models.CharField(max_length=50, unique=True)
+    vegetarian = models.BooleanField(default=False)
     price = models.DecimalField(max_digits=6, decimal_places=2)
 
     def __str__(self):
         return (self.meal)
+
+
+
+
+from django.http import HttpResponseRedirect
+from django.shortcuts import render
+from .forms import UploadFileForm
+
+def upload_file(request):
+    if request.method == 'POST':
+        form = UploadFileForm(request.POST, request.FILES)
+        if form.is_valid():
+            # file is saved
+            form.save()
+            return HttpResponseRedirect('/success/url/')
+    else:
+        form = UploadFileForm()
+    return render(request, 'provider_register.html', {'form': form})
