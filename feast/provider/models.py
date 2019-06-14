@@ -8,7 +8,7 @@ class Provider(models.Model):
     provider_name = models.CharField(max_length=50, unique=True)
     provider_email = models.CharField(max_length=50, unique=True)
     provider_password = models.CharField(max_length=10)
-    kitchen = models.ForeignKey(Kitchen, on_delete=models.CASCADE)
+
 
     def __str__(self):
         return (self.provider_name)
@@ -18,7 +18,7 @@ class Kitchen(models.Model):
 
     kitchen_id = models.Autofield(primary_key=True)
     kitchen_pic = models.ImageField(upload_to='uploads/%Y/%m/%d/')
-    menu = models.ForeignKey(Menu, on_delete=models.CASCADE)
+    provider = models.ForeignKey(Provider, on_delete=models.CASCADE)
 
 
     Mon = models.BooleanField(default=False)
@@ -77,6 +77,7 @@ class Menu(models.Model):
     meal = models.CharField(max_length=50, unique=True)
     vegetarian = models.BooleanField(default=False)
     price = models.DecimalField(max_digits=6, decimal_places=2)
+    kitchen = models.ForeignKey(Kitchen, on_delete=models.CASCADE)
 
     def __str__(self):
         return (self.meal)
