@@ -15,7 +15,7 @@ class Provider(models.Model):
 
 
 class Kitchen(models.Model):
-    provider = models.ForeignKey(Provider, on_delete=models.CASCADE)
+
     kitchen_id = models.Autofield(primary_key=True)
     kitchen_pic = models.ImageField()
 
@@ -77,7 +77,6 @@ class Menu(models.Model):
     meal = model.CharField(max_length=50, unique=True)
     vegetarian = model.BooleanField(default=False)
     price = models.DecimalField(max_digits=6, decimal_places=2)
-    kitchen = models.ForeignKey(Kitchen,on_delete=models.CASCADE)
 
     def __str__(self):
         return (self.meal)
