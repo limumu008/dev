@@ -8,7 +8,7 @@ class Provider(models.Model):
     provider_name = models.CharField(max_length=50, unique=True)
     provider_email = models.CharField(max_length=50, unique=True)
     provider_password = models.CharField(max_length=10)
-
+    confirm_prov_password = models.CharField(max_length=10)
 
     def __str__(self):
         return (self.provider_name)
@@ -98,4 +98,4 @@ def upload_file(request):
             return HttpResponseRedirect('/success/url/')
     else:
         form = UploadFileForm()
-    return render(request, 'provider_register.html', {'form': form})
+    return render(request, 'kitchen_register.html', {'form': form})
